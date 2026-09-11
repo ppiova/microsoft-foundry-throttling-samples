@@ -20,7 +20,7 @@ class CloudBoundaryTests(unittest.TestCase):
             self.assertEqual(self.client.get('/',headers=self.headers).status_code,503)
 
     def test_assets_require_authorization(self):
-        for path in ('/app.js','/style.css','/portal.css'):
+        for path in ('/app.js','/style.css','/portal.css','/slides','/slides.html','/slides.css','/slides.js'):
             self.assertEqual(self.client.get(path).status_code,403)
             with self.client.get(path,headers=self.headers) as response:
                 self.assertEqual(response.status_code,200)

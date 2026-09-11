@@ -16,3 +16,6 @@
 !dotnet/FoundryLab/*.csproj
 !dotnet/config.example.json
 !Dockerfile
+!demo/slides.html
+!demo/slides.css
+!demo/slides.js

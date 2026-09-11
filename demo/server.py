@@ -130,6 +130,10 @@ class Handler(BaseHTTPRequestHandler):
             return self.respond(200, runs())
         assets = {"/": ("index.html", "text/html; charset=utf-8"), "/app.js": ("app.js", "text/javascript"), "/style.css": ("style.css", "text/css")}
         assets["/portal.css"] = ("portal.css", "text/css")
+        assets['/slides'] = ('slides.html', 'text/html; charset=utf-8')
+        assets['/slides.html'] = ('slides.html', 'text/html; charset=utf-8')
+        assets['/slides.css'] = ('slides.css', 'text/css')
+        assets['/slides.js'] = ('slides.js', 'text/javascript')
         if self.path not in assets:
             return self.respond(404, {"error": "Not found"})
         name, mime = assets[self.path]
