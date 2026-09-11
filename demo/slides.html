@@ -27,9 +27,9 @@
 
 </section>
 <section class="slide" id="slide-4" hidden aria-labelledby="title-4">
-<p class="eyebrow">When do we retry, pace or reduce concurrency?</p><h2 id="title-4">Each control changes<br>a different part of the request flow</h2>
-<table><thead><tr><th>Control</th><th>What changes</th><th>What to watch</th></tr></thead><tbody><tr><td>Retry with backoff</td><td>When a failed attempt repeats</td><td>Extra attempts and elapsed time</td></tr><tr><td>Pacing</td><td>When new requests start</td><td>Queueing and send intervals</td></tr><tr><td>Concurrency limit</td><td>How many requests stay in flight</td><td>Throughput and waiting</td></tr></tbody></table>
-<p class="takeaway">A concurrency limit does not guarantee a fixed request rate.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Azure Architecture Center · Transient fault handling</a>
+<p class="eyebrow">Mitigations in our applications</p><h2 id="title-4">Control each model call</h2>
+<table><thead><tr><th>Control</th><th>What to implement</th><th>Tradeoff</th></tr></thead><tbody><tr><td>Bounded retries</td><td>Honor retry guidance; use backoff with jitter and a deadline.</td><td>Extra attempts and waiting</td></tr><tr><td>Pacing + queue</td><td>Space new sends; bound the queue and its wait time.</td><td>Some work waits or is rejected</td></tr><tr><td>Concurrency limit</td><td>Cap in-flight calls with a semaphore or worker pool.</td><td>Fewer simultaneous calls</td></tr></tbody></table>
+<p class="takeaway">Coordinate all app instances sharing a limit. Concurrency alone does not control RPM.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/rate-limiting-pattern?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Azure Architecture Center · Rate Limiting pattern</a>
 
 </section>
 <section class="slide" id="slide-5" hidden aria-labelledby="title-5">
@@ -40,9 +40,9 @@
 
 </section>
 <section class="slide" id="slide-6" hidden aria-labelledby="title-6">
-<p class="eyebrow">Why does usage look lower than the limit?</p><h2 id="title-6">Quota, estimates and returned usage<br>answer different questions</h2>
+<p class="eyebrow">Mitigate token demand: check what the service counts</p><h2 id="title-6">Quota, estimates and returned usage<br>answer different questions</h2>
 <dl class="definitions"><div><dt>Quota allocation</dt><dd>What capacity can this deployment use?</dd></div><div><dt>Admission estimate</dt><dd>How much work might this request require?</dd></div><div><dt>Returned usage</dt><dd>What token usage did the response report?</dd></div></dl>
-<p class="takeaway">For Azure OpenAI standard deployments, request estimates can differ from final token usage.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/quota?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Microsoft Learn · Manage Azure OpenAI quota</a>
+<p class="takeaway">Reduce unnecessary prompt content and right-size output limits. Verify quality and provider accounting.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/quota?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Microsoft Learn · Manage Azure OpenAI quota</a>
 
 </section>
 <section class="slide" id="slide-7" hidden aria-labelledby="title-7">
@@ -59,7 +59,7 @@
 </section>
 <section class="slide demo-slide" id="slide-9" hidden aria-labelledby="title-9">
 <p class="eyebrow">10-minute demonstration</p><h2 id="title-9">Let's compare the mitigations</h2>
-<p class="lead">Six requests: Burst, Retry and Paced.<br>Compare completion, attempts and waiting time.</p><p class="caption">Python and C# / .NET 10 · Mock runs never call Azure models</p>
+<p class="lead">Burst: observe the rejections.<br>Retry: recover with extra attempts.<br>Paced: space sends to reduce rejections.</p><p class="caption">Compare completion, attempts and waiting time. Local RPM simulation; results can vary.</p>
 <a class="launch" href="/#experiment" target="_blank" rel="noopener">Open the demo ↗</a><p class="caption">The demo opens in another tab. Return here and advance to the close.</p>
 
 </section>
