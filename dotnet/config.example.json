@@ -1,0 +1,68 @@
+{
+  "targets": {
+    "aoai": {
+      "provider": "azure_openai",
+      "deployment": "REPLACE_ME",
+      "endpoint_env": "AOAI_ENDPOINT",
+      "credential_env": "AOAI_API_KEY",
+      "auth": "entra",
+      "model": "VERIFY",
+      "version": "VERIFY",
+      "lifecycle": "VERIFY",
+      "hosting": "Azure",
+      "region": "VERIFY",
+      "deployment_type": "Standard: VERIFY",
+      "quota_scope": "VERIFY in the portal and documentation",
+      "verified_limits": {},
+      "credential_type": "azure_cli"
+    },
+    "claude": {
+      "provider": "claude",
+      "deployment": "REPLACE_ME",
+      "endpoint_env": "CLAUDE_ENDPOINT",
+      "credential_env": "CLAUDE_API_KEY",
+      "auth": "entra",
+      "model": "VERIFY",
+      "version": "VERIFY",
+      "lifecycle": "VERIFY",
+      "hosting": "VERIFY Azure or Anthropic",
+      "region": "VERIFY",
+      "deployment_type": "VERIFY",
+      "quota_scope": "VERIFY shared pool",
+      "verified_limits": {},
+      "credential_type": "azure_cli"
+    },
+    "mai": {
+      "provider": "mai_thinking",
+      "deployment": "REPLACE_ME",
+      "endpoint_env": "MAI_ENDPOINT",
+      "credential_env": "MAI_API_KEY",
+      "auth": "entra",
+      "model": "MAI-Thinking-1",
+      "version": "2026-06-01",
+      "lifecycle": "Public preview: recheck",
+      "hosting": "Azure",
+      "region": "VERIFY",
+      "deployment_type": "GlobalStandard",
+      "quota_scope": "VERIFY",
+      "verified_limits": {},
+      "credential_type": "azure_cli"
+    },
+    "image": {
+      "provider": "mai_image",
+      "deployment": "REPLACE_ME",
+      "endpoint_env": "MAI_ENDPOINT",
+      "credential_env": "MAI_API_KEY",
+      "auth": "entra",
+      "model": "MAI-Image-2.6",
+      "version": "2026-07-31",
+      "lifecycle": "Public preview: recheck",
+      "hosting": "Azure",
+      "region": "VERIFY",
+      "deployment_type": "GlobalStandard",
+      "quota_scope": "VERIFY",
+      "verified_limits": {},
+      "credential_type": "azure_cli"
+    }
+  }
+}

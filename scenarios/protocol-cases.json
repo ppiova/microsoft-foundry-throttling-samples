@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "responses": [
+    {"provider":"azure_openai","status":200,"body":{"status":"completed","output":[{"secret":"never export"}],"usage":{"input_tokens":3}},"outcome":"completed"},
+    {"provider":"azure_openai","status":200,"body":{"status":"incomplete"},"outcome":"incomplete_or_unknown"},
+    {"provider":"claude","status":200,"body":{"stop_reason":"max_tokens"},"outcome":"incomplete_or_other"},
+    {"provider":"claude","status":200,"body":{"stop_reason":"end_turn","usage":{"input_tokens":2,"cache_read_input_tokens":9,"output_tokens":4}},"outcome":"completed"},
+    {"provider":"mai_thinking","status":200,"body":{"choices":[{"finish_reason":"length"}]},"outcome":"incomplete_or_other"},
+    {"provider":"mai_image","status":200,"body":{"data":[]},"outcome":"empty_or_unknown"},
+    {"provider":"mai_image","status":200,"body":{"data":[{"b64_json":"never export"}]},"outcome":"completed"},
+    {"provider":"azure_openai","status":429,"body":{"error":{"code":"RateLimit","message":"never export"}},"outcome":"http_error"}
+  ],
+  "retries": [
+    {"headers":{"retry-after-ms":"1500","retry-after":"5"},"attempt":1,"expected":1.5},
+    {"headers":{"retry-after":"2"},"attempt":1,"expected":2},
+    {"headers":{"retry-after":"Thu, 01 Jan 1970 00:00:03 GMT"},"attempt":1,"expected":3},
+    {"headers":{"retry-after-ms":"NaN"},"attempt":2,"expected":2.5},
+    {"headers":{"retry-after-ms":"-1"},"attempt":5,"expected":8.5}
+  ]
+}

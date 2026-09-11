@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {"value": "eastus2"},
+    "environmentName": {"value": "throttling-demo"},
+    "assignInferenceRole": {"value": false},
+    "modelDeployments": {"value": [
+      {"target": "aoai", "name": "lab-openai", "format": "OpenAI", "model": "gpt-5-mini", "version": "2025-08-07", "capacity": 10}
+    ]}
+  }
+}
