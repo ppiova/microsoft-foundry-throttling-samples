@@ -10,6 +10,8 @@
 
 Built by **[Pablo Piovano](https://github.com/ppiova)** &middot; **Microsoft MVP &middot; Docker Captain**
 
+**[Read the presentation as a PDF](output/pdf/understanding-and-mitigating-http-429.pdf)** — 14 slides in US English, with clickable references and code links. No installation or repository clone required. This public edition contains no speaker notes.
+
 A hands-on lab with independent **Python** and **C# / .NET 10** engines, a browser UI, and fourteen HTML slides. Explore how a burst becomes HTTP attempts, how bounded retries affect completion, and how pacing changes arrival times.
 
 **[Quick start](#quick-start-with-docker) &middot; [Choose your language](#choose-your-language) &middot; [Slides](#explore-the-ui-and-slides) &middot; [Azure](#bring-your-own-azure-deployment) &middot; [Tests](#tests-and-contributions)**
@@ -136,6 +138,10 @@ Both engines implement `preflight`, `baseline`, `burst`, `retry`, `paced` and `g
 5. **Replay** a saved execution: timestamps animate, while KPI cards retain final totals.
 
 The [fourteen-slide deck](demo/slides.html) covers the concepts and links to the lab. Open `/slides` through the running server. Use arrow keys, Page Up/Down, Home/End, the slide selector, or **F** for full screen. The public deck contains no speaker notes or presenter mode.
+
+For reading or sharing without running the lab, use the [PDF edition](output/pdf/understanding-and-mitigating-http-429.pdf). The PDF includes the same content in a layout for reading. Its demo link opens the setup instructions rather than a private Azure application.
+
+Maintainers can regenerate the PDF from the public HTML with `python -m pip install reportlab` followed by `python scripts/export_slides_pdf.py`. Review the rendered PDF after updating the slides.
 
 **Recorded Azure run** is read-only and starts empty. Collect your own evidence with the CLI if you want to explore that mode; no live recordings are distributed here.
 
