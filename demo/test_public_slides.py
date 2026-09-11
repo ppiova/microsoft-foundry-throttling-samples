@@ -8,9 +8,9 @@ ASSETS = Path(__file__).parent
 
 
 class PublicSlidesTests(unittest.TestCase):
-    def test_deck_contains_ten_sections_and_no_private_controls(self):
+    def test_deck_contains_eleven_sections_and_no_private_controls(self):
         html = (ASSETS / 'slides.html').read_text(encoding='utf-8')
-        self.assertEqual(re.findall(r'id="slide-(\d+)"', html), [str(i) for i in range(1, 11)])
+        self.assertEqual(re.findall(r'id="slide-(\d+)"', html), [str(i) for i in range(1, 12)])
         for name in ('slides.html', 'slides.js', 'slides.css'):
             content = (ASSETS / name).read_text(encoding='utf-8')
             for marker in ('SPEAKER_NOTES', 'notes-toggle', '/presenter', 'show-notes', 'toggleNotes'):

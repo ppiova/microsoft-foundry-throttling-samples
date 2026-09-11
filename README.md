@@ -10,7 +10,7 @@
 
 Built by **[Pablo Piovano](https://github.com/ppiova)** &middot; **Microsoft MVP &middot; Docker Captain**
 
-A hands-on lab with independent **Python** and **C# / .NET 10** engines, a browser UI, and ten HTML slides. Explore how a burst becomes HTTP attempts, how bounded retries affect completion, and how pacing changes arrival times.
+A hands-on lab with independent **Python** and **C# / .NET 10** engines, a browser UI, and eleven HTML slides. Explore how a burst becomes HTTP attempts, how bounded retries affect completion, and how pacing changes arrival times.
 
 **[Quick start](#quick-start-with-docker) &middot; [Choose your language](#choose-your-language) &middot; [Slides](#explore-the-ui-and-slides) &middot; [Azure](#bring-your-own-azure-deployment) &middot; [Tests](#tests-and-contributions)**
 
@@ -135,7 +135,7 @@ Both engines implement `preflight`, `baseline`, `burst`, `retry`, `paced` and `g
 4. **Open the logs** to follow repeated attempts for one logical request.
 5. **Replay** a saved execution: timestamps animate, while KPI cards retain final totals.
 
-The [ten-slide deck](demo/slides.html) covers the concepts and links to the lab. Open `/slides` through the running server. Use arrow keys, Page Up/Down, Home/End, the slide selector, or **F** for full screen. The public deck contains no speaker notes or presenter mode.
+The [eleven-slide deck](demo/slides.html) covers the concepts and links to the lab. Open `/slides` through the running server. Use arrow keys, Page Up/Down, Home/End, the slide selector, or **F** for full screen. The public deck contains no speaker notes or presenter mode.
 
 **Recorded Azure run** is read-only and starts empty. Collect your own evidence with the CLI if you want to explore that mode; no live recordings are distributed here.
 
