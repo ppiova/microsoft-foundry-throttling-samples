@@ -1,6 +1,7 @@
 **
 !demo/
 !demo/server.py
+!demo/container_local.py
 !demo/cloud.py
 !demo/index.html
 !demo/app.js
