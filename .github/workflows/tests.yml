@@ -89,3 +89,10 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/)" = 503
           docker exec lab dotnet /app/published/FoundryLab.dll run --config /app/dotnet/config.example.json --scenario preflight --out /data/dotnet/runs
           docker exec lab python /app/python/lab.py run --config /app/python/config.example.json --scenario preflight --out /data/python/runs
+      - name: Local Compose workflow and persistent evidence
+        run: |
+          docker compose up --build -d --wait
+          python scripts/test_compose.py
+      - name: Stop local Compose service
+        if: always()
+        run: docker compose down

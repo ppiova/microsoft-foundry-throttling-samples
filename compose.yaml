@@ -1,0 +1,25 @@
+services:
+  lab:
+    build:
+      context: .
+      target: local
+    ports:
+      - "127.0.0.1:8765:8765"
+    volumes:
+      - evidence:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8765/api/runs', timeout=5).read()"]
+      interval: 10s
+      timeout: 6s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  evidence:
