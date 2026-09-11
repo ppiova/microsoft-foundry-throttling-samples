@@ -5,7 +5,7 @@
 <header class="masthead"><a href="/">◇ Foundry Lab</a><span>Independent community presentation</span><button id="fullscreen">Full screen</button></header>
 <main id="deck" aria-label="Presentation">
 <section class="slide cover" id="slide-1" aria-labelledby="title-1">
-<p class="eyebrow">Microsoft Foundry · Developer session</p><h1 id="title-1">From HTTP 429<br>to a clear diagnosis</h1><p class="lead">What happened to our requests,<br>and what should we change?</p><p class="byline">Pablo Piovano<br><span>Microsoft MVP · Director of AI</span></p>
+<p class="eyebrow">A question brought to an OZ expert</p><h1 id="title-1">Understanding and<br>mitigating HTTP 429</h1><p class="lead compact">The team was seeing throttling.<br>Would a second subscription help?</p><p class="takeaway">Understand 429 &rarr; explore mitigations &rarr; compare them in a demo.</p><p class="caption">Take these slides and Python / C# samples back to your team.</p><p class="byline">Pablo Piovano<br><span>Microsoft MVP · Docker Captain · OZ</span></p>
 
 </section>
 <section class="slide" id="slide-2" hidden aria-labelledby="title-2">
@@ -27,28 +27,28 @@
 
 </section>
 <section class="slide" id="slide-4" hidden aria-labelledby="title-4">
-<p class="eyebrow">Why does usage look lower than the limit?</p><h2 id="title-4">Quota, estimates and returned usage<br>answer different questions</h2>
-<dl class="definitions"><div><dt>Quota allocation</dt><dd>What capacity can this deployment use?</dd></div><div><dt>Admission estimate</dt><dd>How much work might this request require?</dd></div><div><dt>Returned usage</dt><dd>What token usage did the response report?</dd></div></dl>
-<p class="takeaway">For Azure OpenAI standard deployments, request estimates can differ from final token usage.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/quota?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Microsoft Learn · Manage Azure OpenAI quota</a>
+<p class="eyebrow">When do we retry, pace or reduce concurrency?</p><h2 id="title-4">Each control changes<br>a different part of the request flow</h2>
+<table><thead><tr><th>Control</th><th>What changes</th><th>What to watch</th></tr></thead><tbody><tr><td>Retry with backoff</td><td>When a failed attempt repeats</td><td>Extra attempts and elapsed time</td></tr><tr><td>Pacing</td><td>When new requests start</td><td>Queueing and send intervals</td></tr><tr><td>Concurrency limit</td><td>How many requests stay in flight</td><td>Throughput and waiting</td></tr></tbody></table>
+<p class="takeaway">A concurrency limit does not guarantee a fixed request rate.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Azure Architecture Center · Transient fault handling</a>
 
 </section>
 <section class="slide" id="slide-5" hidden aria-labelledby="title-5">
-<p class="eyebrow">How do we verify the cause?</p><h2 id="title-5">A useful diagnosis connects<br>the error to the workload</h2>
-<ol class="steps"><li><strong>Capture the response</strong><span>Status, service error, retry guidance and available limit headers.</span></li><li><strong>Describe the request pattern</strong><span>Arrival times, concurrency, prompt size and output allowance.</span></li><li><strong>Check the relevant deployment</strong><span>Provider, model, region, deployment type and configured limits.</span></li><li><strong>Repeat with one controlled change</strong><span>Keep enough evidence to compare the outcomes.</span></li></ol>
-<a class="source" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/quota?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Microsoft Learn · Quota troubleshooting</a>
-
-</section>
-<section class="slide" id="slide-6" hidden aria-labelledby="title-6">
-<p class="eyebrow">Why can retries make things worse?</p><h2 id="title-6">Retries add attempts<br>to the original workload</h2>
+<p class="eyebrow">Why can retries make things worse?</p><h2 id="title-5">Retries add attempts<br>to the original workload</h2>
 <div class="equation"><div><strong>6</strong><span>logical requests</span></div><span class="equals">became</span><div><strong>11</strong><span>HTTP attempts</span></div></div>
 <p class="lead compact">All six completed in this saved mock run.<br>The extra attempts also added waiting and traffic.</p><p class="caption">Observed teaching example from the local retry scenario. Counts can vary.</p>
 <p class="takeaway">Respect retry guidance. Bound attempts and total time. Avoid stacked retry policies.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/retry?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Azure Architecture Center · Retry pattern</a>
 
 </section>
+<section class="slide" id="slide-6" hidden aria-labelledby="title-6">
+<p class="eyebrow">Why does usage look lower than the limit?</p><h2 id="title-6">Quota, estimates and returned usage<br>answer different questions</h2>
+<dl class="definitions"><div><dt>Quota allocation</dt><dd>What capacity can this deployment use?</dd></div><div><dt>Admission estimate</dt><dd>How much work might this request require?</dd></div><div><dt>Returned usage</dt><dd>What token usage did the response report?</dd></div></dl>
+<p class="takeaway">For Azure OpenAI standard deployments, request estimates can differ from final token usage.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/quota?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Microsoft Learn · Manage Azure OpenAI quota</a>
+
+</section>
 <section class="slide" id="slide-7" hidden aria-labelledby="title-7">
-<p class="eyebrow">When do we retry, pace or reduce concurrency?</p><h2 id="title-7">Each control changes<br>a different part of the request flow</h2>
-<table><thead><tr><th>Control</th><th>What changes</th><th>What to watch</th></tr></thead><tbody><tr><td>Retry with backoff</td><td>When a failed attempt repeats</td><td>Extra attempts and elapsed time</td></tr><tr><td>Pacing</td><td>When new requests start</td><td>Queueing and send intervals</td></tr><tr><td>Concurrency limit</td><td>How many requests stay in flight</td><td>Throughput and waiting</td></tr></tbody></table>
-<p class="takeaway">A concurrency limit does not guarantee a fixed request rate.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/transient-faults?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Azure Architecture Center · Transient fault handling</a>
+<p class="eyebrow">How do we verify the cause?</p><h2 id="title-7">A useful diagnosis connects<br>the error to the workload</h2>
+<ol class="steps"><li><strong>Capture the response</strong><span>Status, service error, retry guidance and available limit headers.</span></li><li><strong>Describe the request pattern</strong><span>Arrival times, concurrency, prompt size and output allowance.</span></li><li><strong>Check the relevant deployment</strong><span>Provider, model, region, deployment type and configured limits.</span></li><li><strong>Repeat with one controlled change</strong><span>Keep enough evidence to compare the outcomes.</span></li></ol>
+<a class="source" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/quota?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Microsoft Learn · Quota troubleshooting</a>
 
 </section>
 <section class="slide" id="slide-8" hidden aria-labelledby="title-8">
@@ -58,8 +58,8 @@
 
 </section>
 <section class="slide demo-slide" id="slide-9" hidden aria-labelledby="title-9">
-<p class="eyebrow">10-minute demonstration</p><h2 id="title-9">One workload.<br>Different client behavior.</h2>
-<p class="lead">Burst, retry and pacing.<br>Explore OpenAI and MAI adapters.</p><p class="caption">Python and C# / .NET 10 · Mock runs never call Azure models</p>
+<p class="eyebrow">10-minute demonstration</p><h2 id="title-9">Let's compare the mitigations</h2>
+<p class="lead">Six requests: Burst, Retry and Paced.<br>Compare completion, attempts and waiting time.</p><p class="caption">Python and C# / .NET 10 · Mock runs never call Azure models</p>
 <a class="launch" href="/#experiment" target="_blank" rel="noopener">Open the demo ↗</a><p class="caption">The demo opens in another tab. Return here and advance to the close.</p>
 
 </section>
@@ -70,9 +70,10 @@
 
 </section>
 <section class="slide closing" id="slide-11" hidden aria-labelledby="title-11">
-<p class="eyebrow">Discussion</p><h2 id="title-11">What did we observe?<br>What changed?<br>Did the outcome improve?</h2>
-<p class="lead">You can follow the same investigation<br>in Python or C#.</p><p class="byline">Pablo Piovano<br><span>Thank you. Questions?</span></p>
+<p class="eyebrow">Discussion</p><h2 id="title-11">Take this back<br>to your team.</h2>
+<p class="lead">Share the slides. Run the samples.<br>Apply the approach to your own workload.</p><p class="byline">Pablo Piovano<br><span>Thank you. Questions?</span></p>
 
+<a class="source" href="https://github.com/ppiova/microsoft-foundry-throttling-samples" target="_blank" rel="noopener">Get the slides, Docker instructions and Python / C# code on GitHub</a>
 </section>
 </main>
 <footer class="controls"><button id="previous" aria-label="Previous slide">← Previous</button><span id="counter" role="status" aria-live="polite">1 / 11</span><button id="next" aria-label="Next slide">Next →</button><label class="jump-label">Slide <select id="jump" aria-label="Go to slide"></select></label><span class="keys">← → navigate · F full screen</span></footer>
