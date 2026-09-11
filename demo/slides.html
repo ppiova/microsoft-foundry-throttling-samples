@@ -27,7 +27,7 @@
 
 </section>
 <section class="slide" id="slide-4" hidden aria-labelledby="title-4">
-<p class="eyebrow">Mitigations in our applications</p><h2 id="title-4">Put controls around<br>every model call</h2>
+<p class="eyebrow">Mitigations in our applications</p><h2 id="title-4">Control each model call</h2>
 <table><thead><tr><th>Control</th><th>What to implement</th><th>Tradeoff</th></tr></thead><tbody><tr><td>Bounded retries</td><td>Honor retry guidance; use backoff with jitter and a deadline.</td><td>Extra attempts and waiting</td></tr><tr><td>Pacing + queue</td><td>Space new sends; bound the queue and its wait time.</td><td>Some work waits or is rejected</td></tr><tr><td>Concurrency limit</td><td>Cap in-flight calls with a semaphore or worker pool.</td><td>Fewer simultaneous calls</td></tr></tbody></table>
 <p class="takeaway">Coordinate all app instances sharing a limit. Concurrency alone does not control RPM.</p><a class="source" href="https://learn.microsoft.com/en-us/azure/architecture/patterns/rate-limiting-pattern?WT.mc_id=AI-MVP-5004753" target="_blank" rel="noreferrer">Source: Azure Architecture Center · Rate Limiting pattern</a>
 
