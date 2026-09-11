@@ -16,3 +16,17 @@
 !dotnet/FoundryLab/*.csproj
 !dotnet/config.example.json
 !Dockerfile
+!demo/slides.html
+!demo/slides.css
+!demo/slides.js
+.git/
+**/bin/
+**/obj/
+**/__pycache__/
+**/.venv/
+**/venv/
+**/runs/
+**/*.local.json
+**/.env*
+**/*.log
+**/*.md

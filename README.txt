@@ -32,6 +32,14 @@ existing result. Replay animates saved timestamps; KPI cards always show
 final totals. Compare matches workload and service settings across runs.
 Generated reports are stored locally and ignored by Git.
 
+HTML SLIDES
+
+Open http://127.0.0.1:8765/slides after starting the UI. The ten-slide deck
+explains rate limits, retries, pacing and how to interpret evidence. Use
+arrow keys, Page Up/Down, Home/End or the slide selector; F toggles full
+screen. The deck includes a link to the simulator. It contains no speaker
+notes or presenter mode. Microsoft Learn links retain MVP attribution.
+
 QUICK START: PYTHON CLI
 
 Local simulation uses only the Python standard library:

@@ -52,7 +52,9 @@ def index():
 
 @app.get('/<name>')
 def asset(name):
-    if name not in ('app.js', 'style.css', 'portal.css'):
+    if name == 'slides':
+        name = 'slides.html'
+    if name not in ('app.js', 'style.css', 'portal.css', 'slides.html', 'slides.css', 'slides.js'):
         return jsonify(error='Not found'), 404
     return send_from_directory(server.ASSETS, name)
 
