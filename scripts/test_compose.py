@@ -15,7 +15,7 @@ def request(path, payload=None, headers=None):
         return response.read()
 
 
-assert b'id="slide-13"' in request('/slides')
+assert b'id="slide-14"' in request('/slides')
 for path in ('/presenter', '/speaker-notes.json'):
     try:
         request(path)
