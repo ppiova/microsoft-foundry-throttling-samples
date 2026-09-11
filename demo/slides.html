@@ -57,24 +57,43 @@
 <p class="takeaway">Our mock demonstrates RPM behavior. Collect your own Azure evidence separately.</p>
 
 </section>
-<section class="slide demo-slide" id="slide-9" hidden aria-labelledby="title-9">
-<p class="eyebrow">10-minute demonstration</p><h2 id="title-9">Let's compare the mitigations</h2>
+<section class="slide code-slide" id="slide-9" hidden aria-labelledby="title-9"><p class="eyebrow">Inside the sample code</p><h2 id="title-9">Retry only while the budget allows it</h2><p class="caption">Source excerpts: stop when attempts or the deadline are exhausted.</p><div class="code-columns"><div><h3>Python</h3><pre><code>if status != 429 or attempt == retries:
+    break
+if time.monotonic() + delay &gt;= deadline:
+    outcome = &quot;retry_wait_exceeds_deadline&quot;
+    break
+time.sleep(delay)</code></pre><a class="source" href="https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/fa4f26fb170e1739d2e1f346a0e81fa3ed7958c2/python/lab.py#L206-L211" target="_blank" rel="noopener">Open lab.py on GitHub &rarr;</a></div><div><h3>C# / .NET 10</h3><pre><code>if (delay is null) break;
+if (watch.Elapsed.TotalSeconds + delay.Value &gt;= options.Deadline) { outcome = &quot;retry_wait_exceeds_deadline&quot;; break; }
+await Task.Delay(TimeSpan.FromSeconds(delay.Value)); backoff += delay.Value;</code></pre><a class="source" href="https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/fa4f26fb170e1739d2e1f346a0e81fa3ed7958c2/dotnet/FoundryLab/Runner.cs#L91-L93" target="_blank" rel="noopener">Open Runner.cs on GitHub &rarr;</a></div></div><p class="takeaway">The delay helper reads retry headers, then falls back to exponential backoff with jitter.</p><p class="source">Delay helpers: <a href="https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/fa4f26fb170e1739d2e1f346a0e81fa3ed7958c2/python/lab.py#L24-L38" target="_blank" rel="noopener">Python retry_delay</a> &middot; <a href="https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/fa4f26fb170e1739d2e1f346a0e81fa3ed7958c2/dotnet/FoundryLab/Protocol.cs#L83-L91" target="_blank" rel="noopener">C# Protocol.RetryDelay</a></p></section>
+<section class="slide code-slide" id="slide-10" hidden aria-labelledby="title-10"><p class="eyebrow">Inside the sample code</p><h2 id="title-10">Pacing reserves the next send time</h2><p class="caption">Source excerpts inside each Gate admission method; locking and wait loop omitted.</p><div class="code-columns"><div><h3>Python</h3><pre><code>if delay &lt;= 0:
+    self.sent += 1
+    self.history.append(now)
+    if self.rpm:
+        self.next_at = now + 60 / self.rpm
+    return now - began</code></pre><a class="source" href="https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/fa4f26fb170e1739d2e1f346a0e81fa3ed7958c2/python/lab.py#L72-L77" target="_blank" rel="noopener">Open lab.py on GitHub &rarr;</a></div><div><h3>C# / .NET 10</h3><pre><code>if (delay &lt;= 0)
+{
+    sent++; history.Enqueue(now);
+    if (rpm &gt; 0) next = now + 60 / rpm;
+    return now - began;
+}</code></pre><a class="source" href="https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/fa4f26fb170e1739d2e1f346a0e81fa3ed7958c2/dotnet/FoundryLab/Gate.cs#L39-L44" target="_blank" rel="noopener">Open Gate.cs on GitHub &rarr;</a></div></div><p class="takeaway">60 / RPM spaces admissions. Every attempt, including retries, passes through this local gate.</p></section>
+<section class="slide demo-slide" id="slide-11" hidden aria-labelledby="title-11">
+<p class="eyebrow">10-minute demonstration</p><h2 id="title-11">Let's compare the mitigations</h2>
 <p class="lead">Burst: observe the rejections.<br>Retry: recover with extra attempts.<br>Paced: space sends to reduce rejections.</p><p class="caption">Compare completion, attempts and waiting time. Local RPM simulation; results can vary.</p>
 <a class="launch" href="/#experiment" target="_blank" rel="noopener">Open the demo ↗</a><p class="caption">The demo opens in another tab. Return here and advance to the close.</p>
 
 </section>
-<section class="slide" id="slide-10" hidden aria-labelledby="title-10">
-<p class="eyebrow">Do we need more quota or another subscription?</p><h2 id="title-10">The next action depends<br>on the bottleneck we measured</h2>
+<section class="slide" id="slide-12" hidden aria-labelledby="title-12">
+<p class="eyebrow">Do we need more quota or another subscription?</p><h2 id="title-12">The next action depends<br>on the bottleneck we measured</h2>
 <table><thead><tr><th>Evidence</th><th>Next investigation or action</th></tr></thead><tbody><tr><td>Bursts coincide with 429s</td><td>Evaluate pacing and admission control.</td></tr><tr><td>Retries amplify traffic</td><td>Review retry ownership, budgets and backoff.</td></tr><tr><td>Demand reaches a verified limit</td><td>Evaluate quota or capacity options for that deployment.</td></tr><tr><td>The cause remains unclear</td><td>Collect the missing service and workload evidence.</td></tr></tbody></table>
 <p class="takeaway">A second subscription is an architecture choice that needs its own capacity evidence.</p>
 
 </section>
-<section class="slide closing" id="slide-11" hidden aria-labelledby="title-11">
-<p class="eyebrow">Discussion</p><h2 id="title-11">Take this back<br>to your team.</h2>
+<section class="slide closing" id="slide-13" hidden aria-labelledby="title-13">
+<p class="eyebrow">Discussion</p><h2 id="title-13">Take this back<br>to your team.</h2>
 <p class="lead">Share the slides. Run the samples.<br>Apply the approach to your own workload.</p><p class="byline">Pablo Piovano<br><span>Thank you. Questions?</span></p>
 
 <a class="source" href="https://github.com/ppiova/microsoft-foundry-throttling-samples" target="_blank" rel="noopener">Get the slides, Docker instructions and Python / C# code on GitHub</a>
 </section>
 </main>
-<footer class="controls"><button id="previous" aria-label="Previous slide">← Previous</button><span id="counter" role="status" aria-live="polite">1 / 11</span><button id="next" aria-label="Next slide">Next →</button><label class="jump-label">Slide <select id="jump" aria-label="Go to slide"></select></label><span class="keys">← → navigate · F full screen</span></footer>
+<footer class="controls"><button id="previous" aria-label="Previous slide">← Previous</button><span id="counter" role="status" aria-live="polite">1 / 13</span><button id="next" aria-label="Next slide">Next →</button><label class="jump-label">Slide <select id="jump" aria-label="Go to slide"></select></label><span class="keys">← → navigate · F full screen</span></footer>
 </body></html>
