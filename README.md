@@ -8,11 +8,11 @@
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Built by **[Pablo Piovano](https://github.com/ppiova)** Â· **Microsoft MVP Â· Docker Captain**
+Built by **[Pablo Piovano](https://github.com/ppiova)** &middot; **Microsoft MVP &middot; Docker Captain**
 
 A hands-on lab with independent **Python** and **C# / .NET 10** engines, a browser UI, and ten HTML slides. Explore how a burst becomes HTTP attempts, how bounded retries affect completion, and how pacing changes arrival times.
 
-**[Quick start](#quick-start-with-docker) Â· [Choose your language](#choose-your-language) Â· [Slides](#explore-the-ui-and-slides) Â· [Azure](#bring-your-own-azure-deployment) Â· [Tests](#tests-and-contributions)**
+**[Quick start](#quick-start-with-docker) &middot; [Choose your language](#choose-your-language) &middot; [Slides](#explore-the-ui-and-slides) &middot; [Azure](#bring-your-own-azure-deployment) &middot; [Tests](#tests-and-contributions)**
 
 > Independent community project. Not an official Microsoft or Docker product. The default experience uses synthetic local HTTP responses and requires no Azure account or API keys.
 
@@ -200,5 +200,5 @@ Node.js 18+ is needed for UI regression tests. CI checks Python and .NET on Wind
 
 ---
 
-**Pablo Piovano Â· Microsoft MVP Â· Docker Captain** Â· [GitHub](https://github.com/ppiova)
+**Pablo Piovano &middot; Microsoft MVP &middot; Docker Captain** &middot; [GitHub](https://github.com/ppiova)
 Released under the [MIT License](LICENSE).
