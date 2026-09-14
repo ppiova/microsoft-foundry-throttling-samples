@@ -1,0 +1,48 @@
+# PSRule for Azure configuration.
+#
+# Analyzes the Bicep infrastructure against the Azure Well-Architected rules on
+# every push and pull request. See the infrastructure job in
+# .github/workflows/tests.yml.
+
+configuration:
+  # Required to analyze Bicep sources rather than compiled ARM JSON.
+  AZURE_BICEP_FILE_EXPANSION: true
+  AZURE_BICEP_FILE_EXPANSION_TIMEOUT: 15
+
+input:
+  pathIgnore:
+    - "**/*.md"
+    - "**/*.ps1"
+    # An ARM parameter example, not a template to analyze on its own.
+    - "infra/parameters.example.json"
+
+rule:
+  exclude:
+    # This lab is deployed by a reader who wants to reproduce the experiments
+    # against their own Foundry account, from their own workstation. A private
+    # endpoint would require a virtual network and would break the one thing the
+    # lab exists to do, which is let someone run a bounded workload and read the
+    # evidence.
+    #
+    # This is a deliberate, documented exception rather than an oversight. Both
+    # the README and SECURITY.md state that production deployments should use
+    # private endpoints, and infra/modules/foundry.bicep exposes
+    # publicNetworkAccess and networkAcls so the decision can be changed in one
+    # place. The template also accepts allowedIpAddresses to restrict clients.
+    #
+    # What these rules exist to protect is still addressed: the account deploys
+    # with disableLocalAuth = true, so there is no key to steal, and access is
+    # governed by Entra authentication and RBAC. Azure.AI.DisableLocalAuth passes
+    # for exactly that reason.
+    #
+    # Both the current names and the legacy Azure.Cognitive aliases are listed so
+    # a future alias removal does not silently re-break the build.
+    - Azure.AI.PublicAccess
+    - Azure.AI.PrivateEndpoints
+    - Azure.Cognitive.PublicAccess
+    - Azure.Cognitive.PrivateEndpoints
+
+execution:
+  # An excluded rule is an explicit decision recorded above, not something to warn
+  # about on every run. Anything else unexpected should still be loud.
+  ruleExcluded: Ignore

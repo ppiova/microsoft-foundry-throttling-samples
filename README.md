@@ -246,7 +246,7 @@ dotnet test dotnet/FoundryLab.Tests --configuration Release
 python scripts/validate_parity.py
 ```
 
-Node.js 18+ is needed for UI regression tests. CI checks Python and .NET on Windows/Linux, evidence compatibility, Bicep, cloud container boundaries, and the local Compose workflow. Local tests require no Azure credentials.
+Node.js 18+ is needed for UI regression tests. CI checks Python and .NET on Windows/Linux, evidence compatibility, Bicep against the Azure Well-Architected rules with PSRule, cloud container boundaries, and the local Compose workflow. CodeQL analyzes Python, JavaScript, C# and the workflows themselves. Local tests require no Azure credentials.
 
 [Report an issue](https://github.com/ppiova/microsoft-foundry-throttling-samples/issues) with runtime versions, synthetic settings and a minimal reproduction. Focus pull requests on one change and include relevant validation. See [CONTRIBUTING.md](CONTRIBUTING.md) for the conventions this project follows.
 

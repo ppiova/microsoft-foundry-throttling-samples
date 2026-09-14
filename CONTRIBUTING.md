@@ -56,6 +56,10 @@ python -B scripts/export_slides_pdf.py
 Review the rendered PDF after regenerating it. CI runs the equivalent checks on Windows and Linux
 and requires no Azure credentials.
 
+Infrastructure changes are additionally analyzed by PSRule for Azure against the Well-Architected
+rules. If a rule has to be excluded, record the reasoning in `ps-rule.yaml` next to the existing
+exclusions rather than silencing it without explanation.
+
 ## What not to commit
 
 Credentials, endpoints, tokens, local configuration, request IDs, real incident data, and live run
