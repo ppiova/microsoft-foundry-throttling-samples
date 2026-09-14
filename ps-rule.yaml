@@ -16,6 +16,20 @@ input:
     # An ARM parameter example, not a template to analyze on its own.
     - "infra/parameters.example.json"
 
+    # Neither of these is a standalone deployment, and each has a required
+    # parameter with no default, so expanding it on its own fails before any rule
+    # runs. They are still analyzed, through the template that supplies their
+    # parameters:
+    #
+    #   modules/foundry.bicep  is analyzed through main.bicep, which is where the
+    #                          account name is composed. That path is what reports
+    #                          Azure.AI.DisableLocalAuth passing.
+    #   container-app.bicep    takes the container image from the deployment
+    #                          pipeline, which is why it has no default. It is
+    #                          analyzed as part of the hosted deployment.
+    - "infra/modules/foundry.bicep"
+    - "infra/container-app.bicep"
+
 rule:
   exclude:
     # This lab is deployed by a reader who wants to reproduce the experiments
