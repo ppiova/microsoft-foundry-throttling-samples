@@ -1,0 +1,100 @@
+# PSRule for Azure configuration.
+#
+# Analyzes the Bicep infrastructure against the Azure Well-Architected rules on
+# every push and pull request. See the infrastructure job in
+# .github/workflows/tests.yml.
+
+configuration:
+  # Required to analyze Bicep sources rather than compiled ARM JSON.
+  AZURE_BICEP_FILE_EXPANSION: true
+  AZURE_BICEP_FILE_EXPANSION_TIMEOUT: 15
+
+input:
+  pathIgnore:
+    - "**/*.md"
+    - "**/*.ps1"
+    # An ARM parameter example, not a template to analyze on its own.
+    - "infra/parameters.example.json"
+
+    # Neither of these is a standalone deployment, and each has a required
+    # parameter with no default, so expanding it on its own fails before any rule
+    # runs. They are still analyzed, through the template that supplies their
+    # parameters:
+    #
+    #   modules/foundry.bicep  is analyzed through main.bicep, which is where the
+    #                          account name is composed. That path is what reports
+    #                          Azure.AI.DisableLocalAuth passing.
+    #   container-app.bicep    takes the container image from the deployment
+    #                          pipeline, which is why it has no default. It is
+    #                          analyzed as part of the hosted deployment.
+    - "infra/modules/foundry.bicep"
+    - "infra/container-app.bicep"
+
+rule:
+  exclude:
+    # This lab is deployed by a reader who wants to reproduce the experiments
+    # against their own Foundry account, from their own workstation. A private
+    # endpoint would require a virtual network and would break the one thing the
+    # lab exists to do, which is let someone run a bounded workload and read the
+    # evidence.
+    #
+    # This is a deliberate, documented exception rather than an oversight. Both
+    # the README and SECURITY.md state that production deployments should use
+    # private endpoints, and infra/modules/foundry.bicep exposes
+    # publicNetworkAccess and networkAcls so the decision can be changed in one
+    # place. The template also accepts allowedIpAddresses to restrict clients.
+    #
+    # What these rules exist to protect is still addressed: the account deploys
+    # with disableLocalAuth = true, so there is no key to steal, and access is
+    # governed by Entra authentication and RBAC. Azure.AI.DisableLocalAuth passes
+    # for exactly that reason.
+    #
+    # Both the current names and the legacy Azure.Cognitive aliases are listed so
+    # a future alias removal does not silently re-break the build.
+    - Azure.AI.PublicAccess
+    - Azure.AI.PrivateEndpoints
+    - Azure.Cognitive.PublicAccess
+    - Azure.Cognitive.PrivateEndpoints
+
+    # The same reasoning applies to the optional hosted demo in hosting.bicep.
+    # It exists so a small authorized group can open the lab in a browser, so it
+    # has to be reachable. Access is not open: the container app sits behind
+    # Container Apps Easy Auth with a single-tenant app registration, and the
+    # application fails closed until that is configured.
+    - Azure.ContainerApp.PublicAccess
+
+    # The storage account backs one Azure Files share that the container app
+    # mounts for evidence. Azure Container Apps mounts an Azure Files share using
+    # an account key, which hosting.bicep supplies from listKeys(). Setting
+    # allowSharedKeyAccess to false or defaulting the firewall to Deny would make
+    # the mount fail, so these are not oversights that can simply be switched on.
+    # Removing the key would mean redesigning the evidence volume, which is
+    # tracked separately rather than hidden here.
+    - Azure.Storage.LocalAuth
+    - Azure.Storage.Firewall
+
+    # That same account serves no blob containers, only the file share, so the
+    # blob soft delete rules have nothing to protect here.
+    - Azure.Storage.SoftDelete
+    - Azure.Storage.ContainerSoftDelete
+
+    # Cost-driven choices for an optional demo deployment a reader stands up to
+    # follow along and then deletes. Each of these would be wrong to exclude in a
+    # production template:
+    #   - Premium container registry, for geo-replication and an export policy
+    #   - Geo-redundant storage instead of LRS
+    #   - Zone-redundant container apps
+    #   - A replicated Log Analytics workspace
+    # The lab's durable artifact is the repository, not the deployment, and the
+    # evidence it collects is reproducible in one command.
+    - Azure.ACR.MinSku
+    - Azure.ACR.GeoReplica
+    - Azure.ACR.ExportPolicy
+    - Azure.Storage.UseReplication
+    - Azure.ContainerApp.AvailabilityZone
+    - Azure.Log.Replication
+
+execution:
+  # An excluded rule is an explicit decision recorded above, not something to warn
+  # about on every run. Anything else unexpected should still be loud.
+  ruleExcluded: Ignore

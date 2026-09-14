@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Microsoft Foundry product, quota or capacity question
+    url: https://learn.microsoft.com/en-us/azure/ai-foundry/?WT.mc_id=AI-MVP-5004753
+    about: Service behavior, quota increases and capacity go through Microsoft Learn and Azure support, not this repository.
+  - name: Investigating a 429 in your own subscription
+    url: https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/main/docs/INCIDENT-TEMPLATE.md
+    about: Use the incident template to structure the investigation before opening an issue here.
+  - name: Security vulnerability
+    url: https://github.com/ppiova/microsoft-foundry-throttling-samples/security/advisories/new
+    about: Report privately. Do not open a public issue.

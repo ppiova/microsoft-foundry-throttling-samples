@@ -1,0 +1,46 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    labels:
+      - dependencies
+
+  - package-ecosystem: pip
+    directory: /demo
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: deps
+    labels:
+      - dependencies
+
+  - package-ecosystem: pip
+    directory: /python
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: deps
+    labels:
+      - dependencies
+
+  - package-ecosystem: nuget
+    directory: /dotnet
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: deps
+    labels:
+      - dependencies
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: deps
+    labels:
+      - dependencies

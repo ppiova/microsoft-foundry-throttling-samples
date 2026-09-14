@@ -1,0 +1,80 @@
+name: Bug report
+description: Something in the lab does not behave as documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Never paste credentials, endpoints, request IDs or raw live run reports.
+        For a security vulnerability, do not open an issue: see [SECURITY.md](https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/main/SECURITY.md).
+
+        If you are investigating a 429 in your own Azure subscription rather than a defect in this
+        lab, start with [docs/INCIDENT-TEMPLATE.md](https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/main/docs/INCIDENT-TEMPLATE.md) and your
+        Azure support channel.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: The exact command or UI actions, starting from a clean clone.
+      placeholder: |
+        1. docker compose up --build -d
+        2. python python/lab.py run --config python/config.example.json --scenario retry --out python/runs
+        3. ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where does it happen
+      options:
+        - Python engine
+        - C# / .NET engine
+        - Browser UI or local server
+        - Docker or Compose
+        - Bicep or deployment scripts
+        - Slides or PDF
+        - Documentation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Execution mode
+      options:
+        - Local HTTP simulator (default)
+        - Live Azure with --live
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Python version, .NET SDK version, Docker version, browser if relevant.
+      placeholder: |
+        OS: Windows 11
+        Python: 3.12.4
+        .NET SDK: 10.0.100
+        Docker: 27.3.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Run settings and output
+      description: |
+        The scenario and synthetic settings you used, plus the relevant console output or the
+        `summary.json` of the run. Remove endpoints, request IDs and any credential first.
+      render: text

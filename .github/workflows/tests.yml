@@ -58,6 +58,9 @@ jobs:
   infrastructure:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - shell: pwsh
@@ -71,6 +74,32 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Hosting Bicep build failed' }
           az bicep build --file infra/container-app.bicep --outfile "$env:RUNNER_TEMP/container-app.json"
           if ($LASTEXITCODE -ne 0) { throw 'Container App Bicep build failed' }
+
+      - name: Analyze Bicep with PSRule for Azure
+        uses: microsoft/ps-rule@46451b8f5258c41beb5ae69ed7190ccbba84112c # v2.9.0
+        # The upload below is skipped for forks, so a rule failure has to surface
+        # as a failing step rather than only as a code-scanning alert nobody reads.
+        continue-on-error: false
+        with:
+          modules: PSRule.Rules.Azure
+          inputPath: infra/
+          outputFormat: Sarif
+          outputPath: reports/ps-rule.sarif
+
+      # A pull request from a fork gets a read-only token, so uploading SARIF fails
+      # there regardless of the permissions this job requests. Skipping it keeps a
+      # first-time contributor from seeing a red check they cannot fix. The
+      # expression is used rather than a hardcoded repository name on purpose:
+      # hardcoding one silently disables the upload the moment the repository is
+      # renamed or transferred, which is exactly what is planned here.
+      - name: Upload PSRule results to code scanning
+        if: >-
+          always() &&
+          (github.event_name != 'pull_request' ||
+           github.event.pull_request.head.repo.full_name == github.repository)
+        uses: github/codeql-action/upload-sarif@b96794f015dfd88f77b49b1c93e0fa7110f94c63 # v4
+        with:
+          sarif_file: reports/ps-rule.sarif
   container:
     runs-on: ubuntu-latest
     timeout-minutes: 15
