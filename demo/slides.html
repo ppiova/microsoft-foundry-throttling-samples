@@ -84,7 +84,8 @@ await Task.Delay(TimeSpan.FromSeconds(delay.Value)); backoff += delay.Value;</co
 }</code></pre><a class="source" href="https://github.com/ppiova/microsoft-foundry-throttling-samples/blob/fa4f26fb170e1739d2e1f346a0e81fa3ed7958c2/dotnet/FoundryLab/Gate.cs#L39-L44" target="_blank" rel="noopener">Open Gate.cs on GitHub &rarr;</a></div></div><p class="takeaway">60 / RPM spaces admissions. Every attempt, including retries, passes through this local gate.</p></section>
 <section class="slide demo-slide" id="slide-12" hidden aria-labelledby="title-12">
 <p class="eyebrow">10-minute demonstration</p><h2 id="title-12">Let's compare the mitigations</h2>
-<p class="lead">Burst: observe the rejections.<br>Retry: recover with extra attempts.<br>Paced: space sends to reduce rejections.</p><p class="caption">Compare completion, attempts and waiting time. Local RPM simulation; results can vary.</p>
+<table><thead><tr><th>Strategy</th><th>Completed</th><th>HTTP attempts</th><th>429s</th></tr></thead><tbody><tr><td>Burst: no control</td><td>2 / 6</td><td>6</td><td>4</td></tr><tr><td>Retry with backoff</td><td>6 / 6</td><td>12</td><td>6</td></tr><tr><td>Paced requests</td><td>6 / 6</td><td>6</td><td>0</td></tr></tbody></table>
+<p class="caption">Same workload: 6 requests, 6 workers, 128 token output cap. Retry recovers by adding attempts; pacing avoids the rejection instead. Local RPM simulation; results can vary.</p>
 <a class="launch" href="/#experiment" target="_blank" rel="noopener">Open the demo ↗</a><p class="caption">The demo opens in another tab. Return here and advance to the close.</p>
 
 </section>
