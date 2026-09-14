@@ -112,9 +112,18 @@ Secret scanning and push protection are repository settings rather than workflow
 enabled. **Dependabot security updates are not yet enabled**, which is what opens a pull request
 when an advisory affects a dependency in use, separate from the weekly version updates.
 
-`ps-rule.yaml` excludes the public access and private endpoint rules, with the reasoning recorded in
-that file: a lab a reader deploys to follow along cannot sit behind a private endpoint. The exposure
-those rules address is mitigated instead by `disableLocalAuth: true`, which leaves no key to steal.
+`ps-rule.yaml` records a reason for every excluded rule. They fall into three groups, and the file
+states which is which rather than listing rule IDs without explanation:
+
+- **Reachability.** A lab a reader deploys to follow along cannot sit behind a private endpoint. The
+  Foundry account still deploys with `disableLocalAuth: true`, so there is no key to steal, and the
+  hosted demo sits behind Container Apps Easy Auth with a single-tenant app registration.
+- **A constraint of the platform.** Azure Container Apps mounts an Azure Files share using an account
+  key, so the storage account cannot set `allowSharedKeyAccess: false` or default its firewall to
+  Deny without breaking the evidence volume. That is recorded as a known limitation, not silenced.
+- **Cost, for an optional demo deployment.** Premium container registry, geo-redundant storage,
+  zone-redundant container apps and a replicated Log Analytics workspace would each be correct in a
+  production template and are not what a reader should stand up to run six requests.
 
 ## Supported versions
 

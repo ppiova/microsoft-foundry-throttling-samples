@@ -1,17 +1,27 @@
 targetScope = 'resourceGroup'
 param location string = resourceGroup().location
 param prefix string = 'foundrylab'
+
+@description('Applied to every resource so cost and ownership can be attributed. Matches the convention in main.bicep.')
+param tags object = {
+  project: 'foundry-throttling-lab'
+  environment: 'demo'
+  managedBy: 'bicep'
+}
+
 var suffix = uniqueString(resourceGroup().id)
 
 resource registry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
   name: '${prefix}${suffix}'
   location: location
+  tags: tags
   sku: { name: 'Basic' }
   properties: { adminUserEnabled: false }
 }
 resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: '${prefix}-identity'
   location: location
+  tags: tags
 }
 resource pull 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(registry.id, identity.id, 'AcrPull')
@@ -25,6 +35,7 @@ resource pull 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 resource logs 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: '${prefix}-logs'
   location: location
+  tags: tags
   properties: {
     sku: { name: 'PerGB2018' }
     retentionInDays: 30
@@ -34,6 +45,7 @@ resource logs 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
 resource environment 'Microsoft.App/managedEnvironments@2025-01-01' = {
   name: '${prefix}-environment'
   location: location
+  tags: tags
   properties: {
     workloadProfiles: [{ name: 'Consumption', workloadProfileType: 'Consumption' }]
     appLogsConfiguration: {
@@ -48,6 +60,7 @@ resource environment 'Microsoft.App/managedEnvironments@2025-01-01' = {
 resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: '${prefix}${suffix}'
   location: location
+  tags: tags
   kind: 'StorageV2'
   sku: { name: 'Standard_LRS' }
   properties: {

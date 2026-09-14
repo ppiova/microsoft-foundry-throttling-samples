@@ -42,6 +42,44 @@ rule:
     - Azure.Cognitive.PublicAccess
     - Azure.Cognitive.PrivateEndpoints
 
+    # The same reasoning applies to the optional hosted demo in hosting.bicep.
+    # It exists so a small authorized group can open the lab in a browser, so it
+    # has to be reachable. Access is not open: the container app sits behind
+    # Container Apps Easy Auth with a single-tenant app registration, and the
+    # application fails closed until that is configured.
+    - Azure.ContainerApp.PublicAccess
+
+    # The storage account backs one Azure Files share that the container app
+    # mounts for evidence. Azure Container Apps mounts an Azure Files share using
+    # an account key, which hosting.bicep supplies from listKeys(). Setting
+    # allowSharedKeyAccess to false or defaulting the firewall to Deny would make
+    # the mount fail, so these are not oversights that can simply be switched on.
+    # Removing the key would mean redesigning the evidence volume, which is
+    # tracked separately rather than hidden here.
+    - Azure.Storage.LocalAuth
+    - Azure.Storage.Firewall
+
+    # That same account serves no blob containers, only the file share, so the
+    # blob soft delete rules have nothing to protect here.
+    - Azure.Storage.SoftDelete
+    - Azure.Storage.ContainerSoftDelete
+
+    # Cost-driven choices for an optional demo deployment a reader stands up to
+    # follow along and then deletes. Each of these would be wrong to exclude in a
+    # production template:
+    #   - Premium container registry, for geo-replication and an export policy
+    #   - Geo-redundant storage instead of LRS
+    #   - Zone-redundant container apps
+    #   - A replicated Log Analytics workspace
+    # The lab's durable artifact is the repository, not the deployment, and the
+    # evidence it collects is reproducible in one command.
+    - Azure.ACR.MinSku
+    - Azure.ACR.GeoReplica
+    - Azure.ACR.ExportPolicy
+    - Azure.Storage.UseReplication
+    - Azure.ContainerApp.AvailabilityZone
+    - Azure.Log.Replication
+
 execution:
   # An excluded rule is an explicit decision recorded above, not something to warn
   # about on every run. Anything else unexpected should still be loud.
