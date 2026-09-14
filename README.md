@@ -1,3 +1,19 @@
+---
+name: Microsoft Foundry throttling samples (Python and C#)
+description: Understand HTTP 429, compare bounded retries with request pacing, and gather the evidence needed before asking for more capacity.
+languages:
+- python
+- csharp
+- bicep
+products:
+- azure
+- azure-openai
+- ai-services
+- azure-container-apps
+page_type: sample
+urlFragment: microsoft-foundry-throttling-samples
+---
+
 # Microsoft Foundry Throttling Samples
 
 **Understand HTTP 429. Compare retries and pacing. Follow the evidence.**
@@ -240,6 +256,19 @@ Node.js 18+ is needed for UI regression tests. CI checks Python and .NET on Wind
 - [Retry pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/retry?WT.mc_id=AI-MVP-5004753)
 - [Foundry access control](https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry?WT.mc_id=AI-MVP-5004753)
 - [Docker Compose quick start](https://docs.docker.com/compose/gettingstarted/)
+
+## Project policies
+
+| | |
+|---|---|
+| [Contributing](CONTRIBUTING.md) | Conventions, validation commands and how to propose a change |
+| [Code of conduct](CODE_OF_CONDUCT.md) | This project follows the Microsoft Open Source Code of Conduct |
+| [Security](SECURITY.md) | How to report a vulnerability privately, and what is in scope |
+| [Support](SUPPORT.md) | What this project can and cannot help you with |
+
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general). Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.
 
 ---
 
