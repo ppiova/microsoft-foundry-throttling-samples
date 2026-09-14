@@ -10,13 +10,36 @@
 
 Built by **[Pablo Piovano](https://github.com/ppiova)** &middot; **Microsoft MVP &middot; Docker Captain**
 
-**[Read the presentation as a PDF](output/pdf/understanding-and-mitigating-http-429.pdf)** — 14 slides in US English, with clickable references and code links. No installation or repository clone required. This public edition contains no speaker notes.
+**[Read the presentation as a PDF](output/pdf/understanding-and-mitigating-http-429.pdf)**: 14 slides in US English, with clickable references and code links. No installation or repository clone required. This public edition contains no speaker notes.
 
 A hands-on lab with independent **Python** and **C# / .NET 10** engines, a browser UI, and fourteen HTML slides. Explore how a burst becomes HTTP attempts, how bounded retries affect completion, and how pacing changes arrival times.
 
-**[Quick start](#quick-start-with-docker) &middot; [Choose your language](#choose-your-language) &middot; [Slides](#explore-the-ui-and-slides) &middot; [Azure](#bring-your-own-azure-deployment) &middot; [Tests](#tests-and-contributions)**
+**[Results](#the-result-in-one-table) &middot; [Quick start](#quick-start-with-docker) &middot; [Choose your language](#choose-your-language) &middot; [Slides](#explore-the-ui-and-slides) &middot; [Deep dives](#go-deeper) &middot; [Azure](#bring-your-own-azure-deployment) &middot; [Tests](#tests-and-contributions)**
 
 > Independent community project. Not an official Microsoft or Docker product. The default experience uses synthetic local HTTP responses and requires no Azure account or API keys.
+
+## The result in one table
+
+Same workload, three client side controls. 6 requests, 6 workers, a 128 token output cap, against a
+mock service that accepts 2 requests per 2 second window.
+
+| Scenario | Completed | HTTP attempts | 429s | E2E p95 |
+|---|---:|---:|---:|---:|
+| **Burst** (no control) | 2 / 6 | 6 | 4 | 0.16 s |
+| **Retry with backoff** | 6 / 6 | 12 | 6 | 4.07 s |
+| **Paced requests** | 6 / 6 | 6 | 0 | 5.01 s |
+
+![Comparison of completion, attempts and 429s across burst, retry and pacing](docs/images/compare.png)
+
+Burst is not fast, it fails fast: the 0.16 s is the cost of rejecting two thirds of the workload.
+Retry buys completion by doubling the attempts. Pacing reaches full completion with no wasted
+attempt at all, and pays in wall clock time instead.
+
+**Retry and pacing are not alternatives.** Pacing controls how requests arrive; retry decides what
+happens when one is rejected anyway. Read the full analysis, the per scenario timelines and the
+caveats in **[docs/RESULTS.md](docs/RESULTS.md)**.
+
+> Synthetic local numbers, reproducible in under a minute. Not a measurement of Azure capacity.
 
 ## What can you learn?
 
@@ -153,6 +176,20 @@ Retries may improve completion while increasing attempts and waiting. Pacing can
 
 HTTP success and completed generation are separate measurements. These experiments alone do not establish that another subscription or more quota would solve a production incident.
 
+## Go deeper
+
+Four documents carry the parts that do not fit in a README:
+
+| Document | Read it when you want to |
+|---|---|
+| **[Reference run](docs/RESULTS.md)** | See the measured comparison, the per scenario timelines, and how to read the numbers without overstating them |
+| **[Code guide](docs/CODE-GUIDE.md)** | Understand the implementation and adapt it: adapters per provider, admission control, token estimates, the retry loop, and what to change for production |
+| **[Microsoft source map](docs/SOURCES.md)** | Trace every provider specific claim in this lab back to official Microsoft documentation |
+| **[Incident template](docs/INCIDENT-TEMPLATE.md)** | Investigate a real 429 in your own project, and decide whether you actually need more capacity |
+
+The code guide is the one to open if you are porting this into an application. The incident template
+is the one to open at 2 a.m.
+
 ## Bring your own Azure deployment
 
 Live CLI execution requires explicit `--live`, your own deployment, authorized identity and verified capacity. It can incur charges. Run it from a configured host environment; the local Docker quick start does not mount Azure credentials or install Azure CLI.
@@ -195,7 +232,7 @@ python scripts/validate_parity.py
 
 Node.js 18+ is needed for UI regression tests. CI checks Python and .NET on Windows/Linux, evidence compatibility, Bicep, cloud container boundaries, and the local Compose workflow. Local tests require no Azure credentials.
 
-[Report an issue](https://github.com/ppiova/microsoft-foundry-throttling-samples/issues) with runtime versions, synthetic settings and a minimal reproduction. Focus pull requests on one change and include relevant validation.
+[Report an issue](https://github.com/ppiova/microsoft-foundry-throttling-samples/issues) with runtime versions, synthetic settings and a minimal reproduction. Focus pull requests on one change and include relevant validation. See [CONTRIBUTING.md](CONTRIBUTING.md) for the conventions this project follows.
 
 ## Keep learning
 
