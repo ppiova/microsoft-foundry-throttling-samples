@@ -1,0 +1,41 @@
+name: Idea or improvement
+description: Suggest a scenario, explanation or capability for the lab
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This lab teaches how to observe and mitigate HTTP 429, and how to gather evidence before
+        asking for more capacity. Suggestions that keep it a teaching tool are easier to accept
+        than ones that turn it into a production client.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is hard to learn or do today
+      description: Describe the gap from the point of view of someone using the lab.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would add or change
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Supporting Microsoft documentation
+      description: |
+        If the idea depends on provider behavior, link the official source. Claims in this
+        repository are traced in docs/SOURCES.md.
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This keeps local simulation working without an Azure account or credentials
+        - label: This can be implemented in both the Python and C# engines, or it is clearly UI or documentation only

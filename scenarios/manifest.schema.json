@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Foundry lab manifest version 1",
+  "type": "object",
+  "required": ["schema_version", "implementation", "runtime_version", "run_id", "started_at_utc", "ended_at_utc", "mode", "scenario", "target", "prompt_sha256", "output_limit", "request_count", "attempt_budget", "max_attempts_per_job", "mock_window_seconds"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "implementation": {"enum": ["python", "dotnet"]},
+    "runtime_version": {"type": "string"},
+    "run_id": {"type": "string", "minLength": 1},
+    "started_at_utc": {"type": "string", "format": "date-time"},
+    "ended_at_utc": {"type": ["string", "null"], "format": "date-time"},
+    "mode": {"enum": ["LOCAL_HTTP_MOCK", "LIVE_AZURE"]},
+    "scenario": {"enum": ["preflight", "baseline", "burst", "retry", "paced", "guarded"]},
+    "target": {"type": "object"},
+    "prompt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "output_limit": {"type": "integer", "minimum": 1},
+    "request_count": {"type": "integer", "minimum": 1},
+    "attempt_budget": {"type": "integer", "minimum": 1},
+    "max_attempts_per_job": {"type": "integer", "minimum": 1},
+    "mock_window_seconds": {"type": ["number", "null"], "exclusiveMinimum": 0}
+  }
+}
