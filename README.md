@@ -24,11 +24,15 @@ urlFragment: microsoft-foundry-throttling-samples
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Built by **[Pablo Piovano](https://github.com/ppiova)** &middot; **Microsoft MVP &middot; Docker Captain**
+Built by **[Pablo Piovano](https://www.linkedin.com/in/ppiova/)** &middot; **Microsoft MVP &middot; Docker Captain**
+
+**[Read the article: Throttling in Microsoft Foundry? What to Check Before Adding Capacity](https://www.linkedin.com/pulse/throttling-microsoft-foundry-what-check-before-adding-pablo-piovano-cg6ue/)**. Learn how to investigate HTTP 429 and test bounded retries, backoff with jitter, and request pacing, then try the companion samples below.
 
 **[Read the presentation as a PDF](output/pdf/understanding-and-mitigating-http-429.pdf)**: 14 slides in US English, with clickable references and code links. No installation or repository clone required. This public edition contains no speaker notes.
 
-A hands-on lab with independent **Python** and **C# / .NET 10** engines, a browser UI, and fourteen HTML slides. Explore how a burst becomes HTTP attempts, how bounded retries affect completion, and how pacing changes arrival times.
+A hands-on lab with independent **C# / .NET 10** and **Python** engines, a browser UI, and fourteen HTML slides. Explore how a burst becomes HTTP attempts, how bounded retries affect completion, and how pacing changes arrival times.
+
+**Read the article → [Run with Docker](#quick-start-with-docker) → [Explore C# or Python](#choose-your-language) → [Share the slides](#explore-the-ui-and-slides).** Docker Compose includes both runtimes and the browser lab, so you can run the local experiments without installing either runtime separately or providing Azure credentials. Use the HTML slides or PDF to bring the lab to your team or technical community.
 
 **[Results](#the-result-in-one-table) &middot; [Quick start](#quick-start-with-docker) &middot; [Choose your language](#choose-your-language) &middot; [Slides](#explore-the-ui-and-slides) &middot; [Deep dives](#go-deeper) &middot; [Azure](#bring-your-own-azure-deployment) &middot; [Tests](#tests-and-contributions)**
 
