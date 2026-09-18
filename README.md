@@ -24,7 +24,7 @@ urlFragment: microsoft-foundry-throttling-samples
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Built by **[Pablo Piovano](https://www.linkedin.com/in/ppiova/)** &middot; **Microsoft MVP &middot; Docker Captain**
+Built by **[Pablo Piovano](https://www.linkedin.com/in/ppiova/)** &middot; **[Microsoft MVP](https://mvp.microsoft.com/en-US/mvp/profile/33e06bb6-ccb0-ec11-983f-000d3a1017e3) &middot; [Docker Captain](https://www.docker.com/contributors/pablo-piovano/)**
 
 **[Read the article: Throttling in Microsoft Foundry? What to Check Before Adding Capacity](https://www.linkedin.com/pulse/throttling-microsoft-foundry-what-check-before-adding-pablo-piovano-cg6ue/)**. Learn how to investigate HTTP 429 and test bounded retries, backoff with jitter, and request pacing, then try the companion samples below.
 
